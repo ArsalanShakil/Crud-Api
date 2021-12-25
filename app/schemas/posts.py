@@ -41,21 +41,7 @@ class Vote(BaseModel):
     dir: conint(le=1)
     
     
-class CommentBase(BaseModel):
-    post_id:int
-    user_id:int
-    content:str 
 
-class CommentCreate(CommentBase):
-    pass
 
-class Comment(CommentBase):
-    id: int
-    class Config:
-        orm_mode = True   
 
-class CommentOut(BaseModel):
-    Comment: Comment
-    class Config:
-        orm_mode = True
         
