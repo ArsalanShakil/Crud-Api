@@ -1,5 +1,5 @@
 import pytest
-from app import schemas
+from app.schemas import users
 from jose import jwt
 from app.config import settings    
     
@@ -7,7 +7,7 @@ def test_create_user(client):
     res = client.post(
         "/users/", json={"email": "hello123@gmail.com", "password": "password123"})
 
-    new_user = schemas.UserOut(**res.json())
+    new_user = users.UserOut(**res.json())
     assert new_user.email == "hello123@gmail.com"
     assert res.status_code == 201
     
@@ -15,7 +15,7 @@ def test_create_user(client):
 def test_login_user(test_user, client):
     res = client.post(
         "/login", data={"username": test_user['email'], "password": test_user['password']})
-    login_res = schemas.Token(**res.json())
+    login_res = users.Token(**res.json())
     payload = jwt.decode(login_res.access_token,
                          settings.secret_key, algorithms=[settings.algorithm])
     id = payload.get("user_id")

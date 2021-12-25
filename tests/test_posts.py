@@ -1,12 +1,12 @@
 import pytest
-from app import schemas
+from app.schemas import posts
 
 
 def test_get_all_posts(authorized_client, test_posts):
     res = authorized_client.get("/posts/")
 
     def validate(post):
-        return schemas.PostOut(**post)
+        return posts.PostOut(**post)
     posts_map = map(validate, res.json())
     posts_list = list(posts_map)
 
@@ -31,7 +31,7 @@ def test_get_one_post_not_exist(authorized_client, test_posts):
 
 def test_get_one_post(authorized_client, test_posts):
     res = authorized_client.get(f"/posts/{test_posts[0].id}")
-    post = schemas.PostOut(**res.json())
+    post = posts.PostOut(**res.json())
     assert post.Post.id == test_posts[0].id
     assert post.Post.content == test_posts[0].content
     assert post.Post.title == test_posts[0].title
@@ -46,7 +46,7 @@ def test_create_post(authorized_client, test_user, test_posts, title, content, p
     res = authorized_client.post(
         "/posts/", json={"title": title, "content": content, "published": published})
 
-    created_post = schemas.Post(**res.json())
+    created_post = posts.Post(**res.json())
     assert res.status_code == 201
     assert created_post.title == title
     assert created_post.content == content
@@ -58,7 +58,7 @@ def test_create_post_default_published_true(authorized_client, test_user, test_p
     res = authorized_client.post(
         "/posts/", json={"title": "arbitrary title", "content": "aasdfjasdf"})
 
-    created_post = schemas.Post(**res.json())
+    created_post = posts.Post(**res.json())
     assert res.status_code == 201
     assert created_post.title == "arbitrary title"
     assert created_post.content == "aasdfjasdf"
@@ -106,7 +106,7 @@ def test_update_post(authorized_client, test_user, test_posts):
 
     }
     res = authorized_client.put(f"/posts/{test_posts[0].id}", json=data)
-    updated_post = schemas.Post(**res.json())
+    updated_post = posts.Post(**res.json())
     assert res.status_code == 200
     assert updated_post.title == data['title']
     assert updated_post.content == data['content']
