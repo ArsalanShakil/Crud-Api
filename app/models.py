@@ -38,9 +38,9 @@ class Vote(Base):
 
 class Comments(Base):
     __tablename__ = "comments"
-    comment_id = Column(Integer, primary_key=True, nullable=False)
+    id = Column(Integer, primary_key=True, nullable=False)
     user_id = Column(Integer, ForeignKey(
-        "users.id", ondelete="CASCADE"), primary_key=True)
+        "users.id", ondelete="CASCADE"), nullable=False)
     post_id = Column(Integer, ForeignKey(
-        "posts.id", ondelete="CASCADE"), primary_key=True)
+        "posts.id", ondelete="CASCADE"), nullable=False)
     content = Column(String, nullable=False)
