@@ -40,3 +40,9 @@ class Vote(BaseModel):
     post_id:int
     dir: conint(le=1)
     
+    
+
+class CommentOut(BaseModel):
+    post_id:int
+    user_id:int
+    content:str 
