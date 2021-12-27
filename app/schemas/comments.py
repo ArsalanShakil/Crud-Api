@@ -25,3 +25,6 @@ class CommentOut(BaseModel):
     Comment: Comment
     class Config:
         orm_mode = True
+        
+class CommentUpdate(BaseModel):
+    content:str 
