@@ -106,6 +106,8 @@ def test_posts(test_user, session, test_user2):
         "content": "3rd content",
         "owner_id": test_user2['id']
     }]
+     
+    
 
     def create_post_model(post):
         return models.Post(**post)
