@@ -17,8 +17,7 @@ router =  APIRouter(
 @router.get("/", response_model=List[posts.PostOut])
 async def get_posts(db: Session = Depends(get_db), current_user : int = Depends(oauth2.get_current_user),
                     limit: int = 10, skip: int = 0, search: Optional[str] = ""):
-
-    db.query(models.Post).filter(models.Post.title.contains(search)).limit(limit).offset(skip)
+    
     posts = db.query(models.Post, func.count(models.Vote.post_id).label("votes")).join(
         models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).filter(models.Post.title.contains(search)).limit(limit).offset(skip).all()
     return posts
@@ -36,10 +35,7 @@ async def get_posts(db: Session = Depends(get_db), current_user : int = Depends(
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=posts.Post)
 async def create_posts(post: posts.PostCreate, db: Session = Depends(get_db), current_user : int = Depends(oauth2.get_current_user)):
-    #cursor.execute("""INSERT INTO posts (title, content, published) VALUES (%s,%s,%s) RETURNING * """,
-        #              (post.title, post.content, post.published))
-        #new_post = cursor.fetchone()
-        #conn.commit()
+
     new_post = models.Post(owner_id=current_user.id, **post.dict())
     db.add(new_post)
     db.commit()
@@ -51,8 +47,7 @@ async def create_posts(post: posts.PostCreate, db: Session = Depends(get_db), cu
 
 @router.get("/{id}", response_model=posts.PostOut)
 async def get_one_posts(id: int, db: Session = Depends(get_db), current_user : int = Depends(oauth2.get_current_user)):
-    # cursor.execute("""SELECT * from posts WHERE id = %s""", (str(id)))
-        # post = cursor.fetchone()
+
     post = db.query(models.Post, func.count(models.Vote.post_id).label("votes")).join(
         models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).filter(models.Post.id == id).first()
     if not post:
@@ -64,9 +59,7 @@ async def get_one_posts(id: int, db: Session = Depends(get_db), current_user : i
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_posts(id: int, db: Session = Depends(get_db), current_user : int = Depends(oauth2.get_current_user)):
-    # cursor.execute("""DELETE FROM posts WHERE id = %s RETURNING *""", (str(id)))
-        # deleted_post = cursor.fetchone()
-        # conn.commit()
+
     post_query = db.query(models.Post).filter(models.Post.id == id)
     post = post_query.first()
     if post == None:
@@ -84,12 +77,6 @@ async def delete_posts(id: int, db: Session = Depends(get_db), current_user : in
 @router.put("/{id}", response_model=posts.Post)
 async def update_posts(id: int,updated_post: posts.PostCreate, db: Session = Depends(get_db), current_user : int = Depends(oauth2.get_current_user)):
 
-
-    # cursor.execute("""UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *""",
-        #                (post.title, post.content, post.published, str(id)))
-        # updated_post = cursor.fetchone()
-        # conn.commit()
-    
     post_query = db.query(models.Post).filter(models.Post.id == id)
      
     post = post_query.first()

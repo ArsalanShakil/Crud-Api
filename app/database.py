@@ -22,21 +22,3 @@ def get_db():
     finally:
         db.close()
         
-
-
-
-
-# import psycopg2
-# from psycopg2.extras import RealDictCursor
-# import time
-# while True:
-#         try:  
-#             conn = psycopg2.connect(host = '' ,database = '',
-#                                     user = '',password = '',cursor_factory = RealDictCursor)
-#             cursor = conn.cursor()
-#             print("DB connected!!!")
-#             break
-#         except Exception as error:
-#             print("DB connection failed")
-#             print("Error", error)
-#             time.sleep(2)
