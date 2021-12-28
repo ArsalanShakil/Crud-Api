@@ -10,7 +10,6 @@ from app.database import Base
 
 class CommentBase(BaseModel):
     post_id:int
-    user_id:int
     content:str 
     
 class CommentCreate(CommentBase):
@@ -18,6 +17,7 @@ class CommentCreate(CommentBase):
 
 class Comment(CommentBase):
     id: int
+    user_id:int
     class Config:
         orm_mode = True   
 
