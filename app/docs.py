@@ -49,13 +49,22 @@ You will be able to:
 * **Read only one post**.
 * **Read only your posts**.
 * **Delete your posts**.
-* **Update your posts**.
+* **Edit your posts**.
 
-## Vote
+## Votes
 
 You will be able to:
 
-* **Upvote a posts**.
-* **Remove your upvote from a posts**.
+* **Upvote a post**.
+* **Remove your upvote from a post**.
+
+
+## Comments
+
+You will be able to:
+
+* **Comment on a post**.
+* **Edit your comment from a post**.
+* **Remove your comment from a post**.
 
 """
